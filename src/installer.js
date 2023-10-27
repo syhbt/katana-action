@@ -4,7 +4,7 @@ import os from 'os';
 import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
 
-const ROOT_URL = "https://github.com/projectdiscovery/nuclei/releases/download";
+const ROOT_URL = "https://github.com/projectdiscovery/katana/releases/download";
 
 function getPackage() {
     switch (os.type()) {
@@ -23,7 +23,7 @@ async function getLatestInfo() {
 		let data = [];
 		https.get({
 			hostname: 'api.github.com',
-			path: '/repos/projectdiscovery/nuclei/releases/latest',
+			path: '/repos/projectdiscovery/katana/releases/latest',
 			headers: { 'User-Agent': 'Github Actions' }
 		}, res => {
 			res.on('data', chunk => data.push(chunk));
@@ -35,31 +35,31 @@ async function getLatestInfo() {
 };
 
 export async function downloadAndInstall(selectedVersion) {
-	const toolName = "nuclei";
+	const toolName = "katana";
 	const latest = await getLatestInfo();
     const version = selectedVersion ? selectedVersion : latest.tag_name.replace(/v/g, '');
 
-	core.startGroup(`Download and install Nuclei ${version}`);
+	core.startGroup(`Download and install Katana ${version}`);
 
 	const packageName = getPackage();
-	const url = `${ROOT_URL}/v${version}/nuclei_${version}_${packageName}.zip`;
+	const url = `${ROOT_URL}/v${version}/katana_${version}_${packageName}.zip`;
 
 	core.info(`Download version ${version} from ${url}.`);
 
 	const downloadDir = await tc.downloadTool(url);
 	if (downloadDir == null) {
-		throw new Error(`Unable to download Nuclei from ${url}.`);
+		throw new Error(`Unable to download Katana from ${url}.`);
 	}
 
-	const installDir = await tc.extractZip(downloadDir);
+	const installDir = await tc.extractZip(downloadDir, process.env.GITHUB_WORKSPACE);
 	if (installDir == null) {
-		throw new Error("Unable to extract Nuclei.");
+		throw new Error("Unable to extract Katana.");
 	}
 
 	const binPath = `${installDir}/${toolName}`
 	fs.chmodSync(binPath, "777");
 
-	core.info(`Nuclei ${version} was successfully installed to ${installDir}.`);
+	core.info(`Katana ${version} was successfully installed to ${installDir}.`);
 	core.endGroup();
 	return binPath
 }
