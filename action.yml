@@ -1,0 +1,79 @@
+name: "Nuclei - Vulnerability Scan"
+description: "Nuclei is a fast and customisable vulnerability scanner based on simple YAML based DSL"
+branding:
+  icon: "activity"
+  color: "blue"
+
+inputs:
+  target:
+    description: "Target to run nuclei scan"
+    required: false
+
+  urls:
+    description: "List of urls to run templates"
+    required: false
+
+  templates:
+    description: "Templates input file/files to check across hosts"
+    required: false
+
+  workflows:
+    description: "Workflows input file/files to check across hosts"
+    required: false
+
+  output:
+    description: "File to save output result"
+    required: false
+
+  json:
+    description: "Write nuclei output in JSON format"
+    required: false
+    default: false
+
+  include-rr:
+    deprecationMessage: "Use omit-raw instead. This will be removed in a future release"
+    description: "Write requests/responses for matches in JSON output [DEPRECATED]"
+    required: false
+    default: true
+
+  omit-raw:
+    description: "Exclude request/response in results"
+    required: false
+    default: false
+
+  user-agent:
+    description: "Set a Custom User-Agent header"
+    required: false
+
+  config:
+    description: "Nuclei configuration file"
+    required: false
+
+  report-config:
+    description: "Issue reporting configuration file"
+    required: false
+
+  github-report:
+    description: "Nuclei Reporting Module for Github Issues"
+    required: false
+    default: false
+
+  github-token:
+    description: "Github token for Github reporting"
+    required: false
+
+  sarif-export:
+    description: "Export nuclei results in SARIF format"
+    required: false
+
+  markdown-export:
+    description: "Export nuclei results in Markdown format"
+    required: false
+
+  flags:
+    description: "Extra nuclei CLI flags to use"
+    required: false
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
