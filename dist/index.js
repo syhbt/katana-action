@@ -6936,7 +6936,6 @@ async function run() {
     if (noScope) param.push('-ns');
     if (extensionFilter) param.push(`-ef={extension-filter}`);
     if (delay) param.push(`-rd={delay}`);
-    if (reportConfig) params.push(`-rc=${reportConfig}`);
     if (headless) params.push('-headless');
     if (config) params.push(`-config=${config}`);
     if (header) params.push(`-H=${header}`);
