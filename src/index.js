@@ -1,27 +1,25 @@
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
 import * as installer from './installer';
-import { generateGithubReportFile } from './yaml';
 import { parseFlagsToArray } from './utils';
 
 const target = core.getInput('target', { required: false });
 const urls = core.getInput('urls', { required: false });
-const templates = core.getInput('templates', { required: false });
-const workflows = core.getInput('workflows', { required: false });
-const sarifExport = core.getInput('sarif-export', { required: false });
-const markdownExport = core.getInput('markdown-export', { required: false });
-const reportConfig = core.getInput('report-config', { required: false });
+const duration = core.getInput('duration', {required: false});
+const fieldScope = core.getInput('field-scope', {required: false});
+const crawlScope = core.getInput('crawl-scope', {required: false});
+const outScope = core.getInput('out-scope', {required: false});
+const noScope = core.getBooleanInput('no-scope', {required: false});
+const extensionFilter = core.getInput('extension-filter', {required: false});
+const depth = core.getInput('depth', {required: false});
+const delay = core.getInput('delay', {required: false});
+const headless = core.getInput('headless', {required: false});
 const config = core.getInput('config', { required: false });
-const userAgent = core.getInput('user-agent', { required: false });
+const header = core.getInput('header', { required: false });
 const flags = core.getInput('flags', { required: false });
 const output = core.getInput('output', { required: false });
 
-const json = core.getBooleanInput('json', { required: false });
-const includeRR = core.getBooleanInput('include-rr', { required: false });
-const omitRaw = core.getBooleanInput('omit-raw', { required: false });
-
-const githubRepot = core.getBooleanInput('github-report', { required: false });
-const githubToken = core.getInput('github-token', { required: false });
+const json = core.getBooleanInput('json', { required: false })
 
 let execOutput = '';
 let execError = '';
@@ -43,32 +41,29 @@ async function run() {
     const params = [];
 
     if (!target && !urls) {
-      core.setFailed('You need to set a target or provide a list of urls for Nuclei.');
+      core.setFailed('You need to set a target or provide a list of urls for Katana.');
       return
     }
 
     // Setting up params
-    if (target) params.push(`-target=${target}`);
+    if (target) params.push(`-u=${target}`);
     if (urls) params.push(`-list=${urls}`);
-    if (templates) params.push(`-t=${templates}`);
-    if (workflows) params.push(`-w=${workflows}`);
-    params.push(`-se=${sarifExport ? sarifExport : 'nuclei.sarif'}`);
-    if (markdownExport) params.push(`-me=${markdownExport}`);
+    if (duration) params.push(`-ct={duration}`);
+    if (fieldScope) params.push(`-fs=${fieldScope}`);
+    if (crawlScope) params.push(`-cs=${crawlScope}`);
+    if (outScope) params.push(`-cos=${outScope}`);
+    if (noScope) param.push('-ns');
+    if (extensionFilter) param.push(`-ef={extension-filter}`);
+    if (delay) param.push(`-rd={delay}`);
     if (reportConfig) params.push(`-rc=${reportConfig}`);
+    if (headless) params.push('-headless');
     if (config) params.push(`-config=${config}`);
-    if (userAgent) params.push(`-H=${userAgent}`);
-    params.push(`-o=${ output ? output : 'nuclei.log' }`);
-    if (json) params.push('-json');
-    if (includeRR) params.push('-irr');
-    if (omitRaw) params.push('-or');
+    if (header) params.push(`-H=${header}`);
+    if (output) params.push(`-o=${ output ? output : 'katana.log' }`);
+
+    if (json) params.push('-j');
 
     if (flags) params.push(...parseFlagsToArray(flags));
-
-    // If everything is fine and github-report is set, generate the yaml config file.
-    if (githubRepot) {
-      await generateGithubReportFile(githubToken);
-      params.push(`-rc=github-report.yaml`);
-    }
 
 		// run tool
     exec.exec(binPath, params, options);
