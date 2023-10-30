@@ -32,6 +32,7 @@ inputs:
   no-scope:
     description: "Disables host based default scope"
     required: false
+    default: false
 
   extension-filter:
     description: "Filter output for given extension (eg, -png,css)"
@@ -68,6 +69,7 @@ inputs:
   json:
     description: "Write output in jsonl format"
     required: false
+    default: false
 
 runs:
   using: 'node16'
