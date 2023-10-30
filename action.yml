@@ -1,0 +1,76 @@
+name: "Katana - Crawling and spidering framework"
+description: "Katana is a fast crawler focused on execution in automation pipelines offering both headless and non-headless crawling."
+branding:
+  icon: "activity"
+  color: "blue"
+
+inputs:
+  target:
+    description: "Target to run katana crawl"
+    required: false
+
+  urls:
+    description: "List of urls to run crawler"
+    required: false
+
+  duration:
+    description: "Maximum duration to crawl the target for (s, m, h, d) (default s)"
+    required: false
+
+  field-scope:
+    description: "Pre-defined scope field (dn,rdn,fqdn) or custom regex (e.g., '(company-staging.io|company.com)') (default: rdn)"
+    required: false
+
+  crawl-scope:
+    description: "In scope url regex to be followed by crawler"
+    required: false
+
+  out-scope:
+    description: "Out of scope url regex to be excluded by crawler"
+    required: false
+
+  no-scope:
+    description: "Disables host based default scope"
+    required: false
+    default: false
+
+  extension-filter:
+    description: "Filter output for given extension (eg, -png,css)"
+    required: false
+
+  depth:
+    description: "Maximum depth to crawl (default 3)"
+    required: false
+
+  delay:
+    description: "Request delay between each request in seconds"
+    required: false
+
+  headless:
+    description: "Enable headless hybrid crawling (experimental)"
+    required: false
+
+  header:
+    description: "Authenticate crawling (eg. -H 'Cookie: usrsess=AmljNrESo')"
+    required: false
+
+  config:
+    description: "Katana configuration file"
+    required: false
+
+  output:
+    description: "File to save output result"
+    required: false
+
+  flags:
+    description: "Extra katana CLI flags to use"
+    required: false
+
+  json:
+    description: "Write output in jsonl format"
+    required: false
+    default: false
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
