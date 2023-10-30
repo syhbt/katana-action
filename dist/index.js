@@ -6939,7 +6939,7 @@ async function run() {
     if (headless) params.push('-headless');
     if (config) params.push(`-config=${config}`);
     if (header) params.push(`-H=${header}`);
-    if (output) params.push(`-o=${ output ? output : 'katana.log' }`);
+    params.push(`-o=${ output ? output : 'katana.log' }`);
 
     if (json) params.push('-j');
 
