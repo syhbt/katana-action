@@ -6929,7 +6929,7 @@ async function run() {
     // Setting up params
     if (target) params.push(`-u=${target}`);
     if (urls) params.push(`-list=${urls}`);
-    if (duration) params.push(`-ct={duration}`);
+    if (duration) params.push(`-ct=${duration}`);
     if (fieldScope) params.push(`-fs=${fieldScope}`);
     if (crawlScope) params.push(`-cs=${crawlScope}`);
     if (outScope) params.push(`-cos=${outScope}`);
